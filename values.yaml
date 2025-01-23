@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: b4bz/homer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+config:
+  enabled: true
+  file: "config.yml"
+
+logo:
+  file: "logo.png"
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "homer.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "homer.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "homer.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "homer.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        configChecksum: "{{ .Files.Get .Values.config.file | sha256sum }}" # Ensure this matches the ConfigMap checksum
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /www/assets/config.yml
+              subPath: config.yml
+            - name: config-volume
+              mountPath: /www/assets/logo.png
+              subPath: logo.png
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "homer.fullname" . }}-config
+            defaultMode: 0444
+
