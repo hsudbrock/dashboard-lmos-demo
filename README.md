@@ -1,4 +1,4 @@
-# A dashboard for the LMOS Demo
+# Draft for a dashboard for the LMOS Demo
 
 Draft of a simple dashboard for the [LMOS demo](https://github.com/eclipse-lmos/lmos-demo); the dashboard is built 
 using [Homer](https://github.com/bastienwirtz/homer), as it makes the dashboard configurable using a simple yaml file.
